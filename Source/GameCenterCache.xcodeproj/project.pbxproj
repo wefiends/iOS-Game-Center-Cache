@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01D5D60414999B2600BB7075 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D5D60314999B2600BB7075 /* Cocoa.framework */; };
+		01D5D61514999B4500BB7075 /* GCCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E7510A132B74AF0050F2DB /* GCCache.m */; };
+		01D5D61614999B5F00BB7075 /* GCCache.h in Headers */ = {isa = PBXBuildFile; fileRef = F4E75109132B74AF0050F2DB /* GCCache.h */; };
+		01D5D61714999B6800BB7075 /* GameCenterCache.h in Headers */ = {isa = PBXBuildFile; fileRef = F42A1AA6132F7ED500824E86 /* GameCenterCache.h */; };
 		F42A1AA7132F7ED600824E86 /* GameCenterCache.h in Headers */ = {isa = PBXBuildFile; fileRef = F42A1AA6132F7ED500824E86 /* GameCenterCache.h */; };
 		F4709E2D132B6FCB001A6BBB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4709E2C132B6FCB001A6BBB /* Foundation.framework */; };
 		F4E7510B132B74AF0050F2DB /* GCCache.h in Headers */ = {isa = PBXBuildFile; fileRef = F4E75109132B74AF0050F2DB /* GCCache.h */; };
@@ -14,6 +18,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01D5D60214999B2600BB7075 /* libGameCenterCache-mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libGameCenterCache-mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		01D5D60314999B2600BB7075 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		01D5D60614999B2600BB7075 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		01D5D60714999B2600BB7075 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		01D5D60814999B2600BB7075 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		01D5D60B14999B2600BB7075 /* GameCenterCache-mac-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GameCenterCache-mac-Prefix.pch"; sourceTree = "<group>"; };
 		F42A1AA6132F7ED500824E86 /* GameCenterCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterCache.h; sourceTree = "<group>"; };
 		F4709E29132B6FCB001A6BBB /* libGameCenterCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGameCenterCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4709E2C132B6FCB001A6BBB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -23,6 +33,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		01D5D5FF14999B2600BB7075 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01D5D60414999B2600BB7075 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4709E26132B6FCB001A6BBB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -34,10 +52,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01D5D60514999B2600BB7075 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01D5D60614999B2600BB7075 /* AppKit.framework */,
+				01D5D60714999B2600BB7075 /* CoreData.framework */,
+				01D5D60814999B2600BB7075 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		01D5D60914999B2600BB7075 /* GameCenterCache-mac */ = {
+			isa = PBXGroup;
+			children = (
+				01D5D60A14999B2600BB7075 /* Supporting Files */,
+			);
+			path = "GameCenterCache-mac";
+			sourceTree = "<group>";
+		};
+		01D5D60A14999B2600BB7075 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				01D5D60B14999B2600BB7075 /* GameCenterCache-mac-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		F4709E1E132B6FCB001A6BBB = {
 			isa = PBXGroup;
 			children = (
 				F4709E2E132B6FCB001A6BBB /* Classes */,
+				01D5D60914999B2600BB7075 /* GameCenterCache-mac */,
 				F4709E2B132B6FCB001A6BBB /* Frameworks */,
 				F4709E2A132B6FCB001A6BBB /* Products */,
 			);
@@ -47,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				F4709E29132B6FCB001A6BBB /* libGameCenterCache.a */,
+				01D5D60214999B2600BB7075 /* libGameCenterCache-mac.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,6 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				F4709E2C132B6FCB001A6BBB /* Foundation.framework */,
+				01D5D60314999B2600BB7075 /* Cocoa.framework */,
+				01D5D60514999B2600BB7075 /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -73,6 +121,15 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		01D5D60014999B2600BB7075 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01D5D61614999B5F00BB7075 /* GCCache.h in Headers */,
+				01D5D61714999B6800BB7075 /* GameCenterCache.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4709E27132B6FCB001A6BBB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -85,6 +142,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		01D5D60114999B2600BB7075 /* GameCenterCache-mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01D5D61314999B2600BB7075 /* Build configuration list for PBXNativeTarget "GameCenterCache-mac" */;
+			buildPhases = (
+				01D5D5FE14999B2600BB7075 /* Sources */,
+				01D5D5FF14999B2600BB7075 /* Frameworks */,
+				01D5D60014999B2600BB7075 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "GameCenterCache-mac";
+			productName = "GameCenterCache-mac";
+			productReference = 01D5D60214999B2600BB7075 /* libGameCenterCache-mac.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		F4709E28132B6FCB001A6BBB /* GameCenterCache */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4709E33132B6FCB001A6BBB /* Build configuration list for PBXNativeTarget "GameCenterCache" */;
@@ -108,6 +182,7 @@
 		F4709E20132B6FCB001A6BBB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "Anton Nikolaienko";
 			};
 			buildConfigurationList = F4709E23132B6FCB001A6BBB /* Build configuration list for PBXProject "GameCenterCache" */;
@@ -123,11 +198,20 @@
 			projectRoot = "";
 			targets = (
 				F4709E28132B6FCB001A6BBB /* GameCenterCache */,
+				01D5D60114999B2600BB7075 /* GameCenterCache-mac */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		01D5D5FE14999B2600BB7075 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01D5D61514999B4500BB7075 /* GCCache.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4709E25132B6FCB001A6BBB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -139,18 +223,174 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		0142BEBB13C284F7001C5E4E /* Ad-Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				DSTROOT = "";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				SDKROOT = iphoneos;
+			};
+			name = "Ad-Hoc Distribution";
+		};
+		0142BEBC13C284F7001C5E4E /* Ad-Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GameCenterCache-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = "Ad-Hoc Distribution";
+		};
+		01D56B3013C4578D00BA727B /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				DSTROOT = "";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				SDKROOT = iphoneos;
+			};
+			name = Distribution;
+		};
+		01D56B3113C4578D00BA727B /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GameCenterCache-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		01D5D60F14999B2600BB7075 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GameCenterCache-mac/GameCenterCache-mac-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		01D5D61014999B2600BB7075 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GameCenterCache-mac/GameCenterCache-mac-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		01D5D61114999B2600BB7075 /* Ad-Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GameCenterCache-mac/GameCenterCache-mac-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = "Ad-Hoc Distribution";
+		};
+		01D5D61214999B2600BB7075 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GameCenterCache-mac/GameCenterCache-mac-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Distribution;
+		};
 		F4709E31132B6FCB001A6BBB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				DSTROOT = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -158,12 +398,16 @@
 		F4709E32132B6FCB001A6BBB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				DSTROOT = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -172,11 +416,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/GameCenterCache.dst;
+				DSTROOT = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GameCenterCache-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -184,22 +429,36 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/GameCenterCache.dst;
+				DSTROOT = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GameCenterCache-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		01D5D61314999B2600BB7075 /* Build configuration list for PBXNativeTarget "GameCenterCache-mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01D5D60F14999B2600BB7075 /* Debug */,
+				01D5D61014999B2600BB7075 /* Release */,
+				01D5D61114999B2600BB7075 /* Ad-Hoc Distribution */,
+				01D5D61214999B2600BB7075 /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F4709E23132B6FCB001A6BBB /* Build configuration list for PBXProject "GameCenterCache" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4709E31132B6FCB001A6BBB /* Debug */,
 				F4709E32132B6FCB001A6BBB /* Release */,
+				0142BEBB13C284F7001C5E4E /* Ad-Hoc Distribution */,
+				01D56B3013C4578D00BA727B /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -209,6 +468,8 @@
 			buildConfigurations = (
 				F4709E34132B6FCB001A6BBB /* Debug */,
 				F4709E35132B6FCB001A6BBB /* Release */,
+				0142BEBC13C284F7001C5E4E /* Ad-Hoc Distribution */,
+				01D56B3113C4578D00BA727B /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

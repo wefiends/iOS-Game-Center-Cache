@@ -11,6 +11,7 @@
 
 @interface GCCache : NSObject {
     NSMutableDictionary *data;
+    BOOL connected;
 }
 
 + (NSArray*)cachedProfiles;
@@ -29,6 +30,8 @@
 + (void)launchGameCenterWithCompletionTarget:(id)target action:(SEL)action;
 + (void)shutdown;
 
+- (id)initWithDictionary:(NSDictionary*)profileDict;
+
 - (BOOL)isEqualToProfile:(NSDictionary*)profileDict;
 - (BOOL)renameProfile:(NSString*)newName;
 
@@ -43,6 +46,7 @@
 - (NSDictionary*)allAchievements;
 
 - (void)save;
+- (BOOL)remove;
 - (void)synchronize;
 - (void)reset;
 

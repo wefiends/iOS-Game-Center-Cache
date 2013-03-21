@@ -21,7 +21,6 @@ static NSString *kGCDefaultProfileName = @"Default";
 
 
 @interface GCCache (Internal)
-- (id)initWithDictionary:(NSDictionary*)profileDict;
 - (BOOL)isEqualToProfile:(NSDictionary*)profileDict;
 
 + (BOOL)isBetterScore:(NSNumber*)lscore thanScore:(NSNumber*)rscore inOrder:(NSString*)order;
@@ -31,11 +30,13 @@ static NSString *kGCDefaultProfileName = @"Default";
 + (BOOL)isGameCenterAPIAvailable;
 + (void)authenticateLocalPlayerWithCompletionHandler:(void(^)(NSError *error))completionHandler;
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 - (void)archiveScore:(GKScore*)score;
 - (void)archiveAchievement:(GKAchievement*)achievement;
 - (void)archiveReset;
 
 - (void)submitArchiveFirstItem;
+#endif
 
 @end
 
@@ -150,6 +151,8 @@ static NSArray *achievements_ = nil;
     }
 }
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+
 + (void)authenticateLocalPlayerWithCompletionHandler:(void(^)(NSError *error))completionHandler
 {
     GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
@@ -187,6 +190,7 @@ static NSArray *achievements_ = nil;
                 [authenticatedCache_ release];
                 authenticatedCache_ = [newCache retain];
                 [newCache release];
+                [[GCCache activeCache] save];
                 
                 GCLOG(@"New profile created for Player (%@).", [localPlayer playerID]);
             }
@@ -195,6 +199,8 @@ static NSArray *achievements_ = nil;
         completionHandler(e);
     }];
 }
+
+#endif
 
 + (void)launchGameCenterWithCompletionTarget:(id)target action:(SEL)action
 {
@@ -208,6 +214,7 @@ static NSArray *achievements_ = nil;
                                                                       nil]]
                               waitUntilDone:NO];
     } else {
+        __block id blockTarget = target;
         [GCCache authenticateLocalPlayerWithCompletionHandler:^(NSError *e) {
             if (e) {
                 GCLOG(@"Player authentication had errors. Working locally.");
@@ -215,8 +222,8 @@ static NSArray *achievements_ = nil;
                 GCLOG(@"Game Center launched.");
                 [GCCache activeCache].connected = YES;
             }
-
-            [target performSelectorOnMainThread:action withObject:e waitUntilDone:NO];
+            
+            [blockTarget performSelectorOnMainThread:action withObject:e waitUntilDone:NO];
         }];
     }
 }
@@ -241,6 +248,7 @@ static NSArray *achievements_ = nil;
 
 + (BOOL)isGameCenterAPIAvailable
 {
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     // Check for presence of GKLocalPlayer class.
     BOOL localPlayerClassAvailable = (NSClassFromString(@"GKLocalPlayer")) != nil;
     
@@ -250,6 +258,9 @@ static NSArray *achievements_ = nil;
     BOOL osVersionSupported = ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending);
     
     return (localPlayerClassAvailable && osVersionSupported);
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+    return NO;
+#endif
 }
 
 + (BOOL)isBetterScore:(NSNumber*)lscore thanScore:(NSNumber*)rscore inOrder:(NSString*)order
@@ -397,8 +408,9 @@ static NSArray *achievements_ = nil;
 
 - (void)save
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *allProfiles = [NSMutableArray arrayWithArray:
-                                   [[NSUserDefaults standardUserDefaults] arrayForKey:kGCProfilesProperty]];
+                                   [defaults arrayForKey:kGCProfilesProperty]];
     // Looking for this profile
     BOOL replaced = NO;
     for (int i = 0; i < allProfiles.count; ++i) {
@@ -414,14 +426,41 @@ static NSArray *achievements_ = nil;
         [allProfiles addObject:self.data];
     }
     
-    [[NSUserDefaults standardUserDefaults] setObject:allProfiles forKey:kGCProfilesProperty];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults setObject:allProfiles forKey:kGCProfilesProperty];
+    [defaults synchronize];
 
     GCLOG(@"GCCache saved for profile: %@.", self.profileName);
 }
 
+- (BOOL) remove
+{
+    NSMutableArray *allProfiles = [NSMutableArray arrayWithArray:
+                                   [[NSUserDefaults standardUserDefaults] arrayForKey:kGCProfilesProperty]];
+    // Looking for this profile
+    for (int i = 0; i < allProfiles.count; ++i) {
+        NSDictionary *profile = [allProfiles objectAtIndex:i];
+        if ([self isEqualToProfile:profile]) {
+            [allProfiles removeObjectAtIndex:i];
+            break;
+        }
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:allProfiles forKey:kGCProfilesProperty];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    GCLOG(@"GCCache removed profile: %@.", self.profileName);
+    [activeCache_ release], activeCache_ = nil;
+    
+    if ([allProfiles count] != 0) {
+        [GCCache activateCache:[GCCache cacheForProfile:[allProfiles objectAtIndex:0]]];
+        return YES;
+    }
+    return NO;
+}
+
 - (void)synchronize
 {
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     // Sending out archived data
     if (!self.isLocal) {
         NSArray *archive = [self.data objectForKey:@"Archive"];
@@ -430,6 +469,7 @@ static NSArray *achievements_ = nil;
             [self submitArchiveFirstItem];
         }
     }
+#endif
 }
 
 - (void)reset
@@ -439,7 +479,8 @@ static NSArray *achievements_ = nil;
                  [self.data valueForKey:@"IsLocal"], @"IsLocal",
                  [self.data valueForKey:@"PlayerID"], @"PlayerID",  // can be nil
                  nil];
-    
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     if (!self.isLocal) {
         [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
         {
@@ -451,7 +492,7 @@ static NSArray *achievements_ = nil;
             }
         }];
     }
-
+#endif
     GCLOG(@"GCCache reset.");
     [self save];
 }
@@ -466,6 +507,7 @@ static NSArray *achievements_ = nil;
         return NO;
     }
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     if (!self.isLocal) {
         GKScore *newScore = [[GKScore alloc] initWithCategory:[leaderboard valueForKey:@"ID"]];
         newScore.value = [score integerValue];
@@ -480,6 +522,7 @@ static NSArray *achievements_ = nil;
         
         [newScore autorelease];
     }
+#endif
 
     NSMutableDictionary *scoreDict = [NSMutableDictionary dictionaryWithDictionary:[self.data objectForKey:@"Scores"]];
     NSNumber *currScore = [scoreDict valueForKey:board];    
@@ -531,7 +574,8 @@ static NSArray *achievements_ = nil;
     
     [achievementDict setValue:[NSNumber numberWithDouble:100.0] forKey:achievement];
     [self.data setObject:achievementDict forKey:@"Achievements"];
-    
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     if (!self.isLocal) {
         GKAchievement *achievementObj = [[GKAchievement alloc] initWithIdentifier:[achievementDesc valueForKey:@"ID"]];
         achievementObj.percentComplete = 100.0;
@@ -547,6 +591,7 @@ static NSArray *achievements_ = nil;
         
         [achievementObj autorelease];
     }
+#endif
     
     GCLOG(@"Achievement '%@' unlocked.", achievement);
     [self save];
@@ -588,7 +633,8 @@ static NSArray *achievements_ = nil;
     
     [achievementDict setValue:[NSNumber numberWithDouble:progress] forKey:achievement];
     [self.data setObject:achievementDict forKey:@"Achievements"];
-    
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     if (!self.isLocal) {
         GKAchievement *achievementObj = [[GKAchievement alloc] initWithIdentifier:[achievementDesc valueForKey:@"ID"]];
         achievementObj.percentComplete = progress;
@@ -604,6 +650,7 @@ static NSArray *achievements_ = nil;
         
         [achievementObj autorelease];
     }
+#endif
     
     if (progress == 100.0) {
         GCLOG(@"Achievement '%@' unlocked.", achievement);
@@ -631,6 +678,7 @@ static NSArray *achievements_ = nil;
     return [self.data objectForKey:@"Achievements"];
 }
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
 #pragma mark - Archiving
 
@@ -679,9 +727,11 @@ static NSArray *achievements_ = nil;
 {
     BOOL continueSubmit = NO;
     NSMutableArray *archiveList = [NSMutableArray arrayWithArray:[self.data objectForKey:@"Archive"]];
-    if ([[archiveList objectAtIndex:0] isEqual:item]) {
-        [archiveList removeObjectAtIndex:0];
-        [self.data setObject:archiveList forKey:@"Archive"];
+    if (archiveList && archiveList.count) {
+        if ([[archiveList objectAtIndex:0] isEqual:item]) {
+            [archiveList removeObjectAtIndex:0];
+            [self.data setObject:archiveList forKey:@"Archive"];
+        }
     }
     
     if (archiveList.count > 0) {
@@ -753,5 +803,7 @@ static NSArray *achievements_ = nil;
         }];
     }
 }
+
+#endif
 
 @end
