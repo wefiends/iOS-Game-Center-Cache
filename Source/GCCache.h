@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface GCCache : NSObject {
     NSMutableDictionary *data;
     BOOL connected;

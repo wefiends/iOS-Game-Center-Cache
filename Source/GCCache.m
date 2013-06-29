@@ -30,13 +30,11 @@ static NSString *kGCDefaultProfileName = @"Default";
 + (BOOL)isGameCenterAPIAvailable;
 + (void)authenticateLocalPlayerWithCompletionHandler:(void(^)(NSError *error))completionHandler;
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 - (void)archiveScore:(GKScore*)score;
 - (void)archiveAchievement:(GKAchievement*)achievement;
 - (void)archiveReset;
 
 - (void)submitArchiveFirstItem;
-#endif
 
 @end
 
@@ -151,8 +149,6 @@ static NSArray *achievements_ = nil;
     }
 }
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-
 + (void)authenticateLocalPlayerWithCompletionHandler:(void(^)(NSError *error))completionHandler
 {
     GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
@@ -199,8 +195,6 @@ static NSArray *achievements_ = nil;
         completionHandler(e);
     }];
 }
-
-#endif
 
 + (void)launchGameCenterWithCompletionTarget:(id)target action:(SEL)action
 {
@@ -259,7 +253,13 @@ static NSArray *achievements_ = nil;
     
     return (localPlayerClassAvailable && osVersionSupported);
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
-    return NO;
+    // Check for presence of GKLocalPlayer class.
+    BOOL localPlayerClassAvailable = (NSClassFromString(@"GKLocalPlayer")) != nil;
+    
+    //Running OS X 10.8 or later.
+    BOOL osVersionSupported = floor(NSAppKitVersionNumber) >= 1162;
+    
+    return (localPlayerClassAvailable && osVersionSupported);
 #endif
 }
 
@@ -460,16 +460,14 @@ static NSArray *achievements_ = nil;
 
 - (void)synchronize
 {
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     // Sending out archived data
     if (!self.isLocal) {
         NSArray *archive = [self.data objectForKey:@"Archive"];
         if (archive && archive.count > 0) {
-            GCLOG(@"Sending archieved data to Game Center (%d)...", archive.count);
+            GCLOG(@"Sending archieved data to Game Center (%ld)...", (unsigned long)archive.count);
             [self submitArchiveFirstItem];
         }
     }
-#endif
 }
 
 - (void)reset
@@ -480,7 +478,6 @@ static NSArray *achievements_ = nil;
                  [self.data valueForKey:@"PlayerID"], @"PlayerID",  // can be nil
                  nil];
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     if (!self.isLocal) {
         [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
         {
@@ -492,7 +489,6 @@ static NSArray *achievements_ = nil;
             }
         }];
     }
-#endif
     GCLOG(@"GCCache reset.");
     [self save];
 }
@@ -507,7 +503,6 @@ static NSArray *achievements_ = nil;
         return NO;
     }
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     if (!self.isLocal) {
         GKScore *newScore = [[GKScore alloc] initWithCategory:[leaderboard valueForKey:@"ID"]];
         newScore.value = [score integerValue];
@@ -522,7 +517,6 @@ static NSArray *achievements_ = nil;
         
         [newScore autorelease];
     }
-#endif
 
     NSMutableDictionary *scoreDict = [NSMutableDictionary dictionaryWithDictionary:[self.data objectForKey:@"Scores"]];
     NSNumber *currScore = [scoreDict valueForKey:board];    
@@ -575,7 +569,6 @@ static NSArray *achievements_ = nil;
     [achievementDict setValue:[NSNumber numberWithDouble:100.0] forKey:achievement];
     [self.data setObject:achievementDict forKey:@"Achievements"];
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     if (!self.isLocal) {
         GKAchievement *achievementObj = [[GKAchievement alloc] initWithIdentifier:[achievementDesc valueForKey:@"ID"]];
         achievementObj.percentComplete = 100.0;
@@ -591,7 +584,6 @@ static NSArray *achievements_ = nil;
         
         [achievementObj autorelease];
     }
-#endif
     
     GCLOG(@"Achievement '%@' unlocked.", achievement);
     [self save];
@@ -634,7 +626,6 @@ static NSArray *achievements_ = nil;
     [achievementDict setValue:[NSNumber numberWithDouble:progress] forKey:achievement];
     [self.data setObject:achievementDict forKey:@"Achievements"];
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     if (!self.isLocal) {
         GKAchievement *achievementObj = [[GKAchievement alloc] initWithIdentifier:[achievementDesc valueForKey:@"ID"]];
         achievementObj.percentComplete = progress;
@@ -650,7 +641,6 @@ static NSArray *achievements_ = nil;
         
         [achievementObj autorelease];
     }
-#endif
     
     if (progress == 100.0) {
         GCLOG(@"Achievement '%@' unlocked.", achievement);
@@ -677,8 +667,6 @@ static NSArray *achievements_ = nil;
 {
     return [self.data objectForKey:@"Achievements"];
 }
-
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
 #pragma mark - Archiving
 
@@ -736,7 +724,7 @@ static NSArray *achievements_ = nil;
     
     if (archiveList.count > 0) {
         continueSubmit = YES;
-        GCLOG(@"Continuing archive submittion (%d)...", archiveList.count);
+        GCLOG(@"Continuing archive submittion (%d)...", (int) archiveList.count);
     }
     
     if (continueSubmit) {
@@ -803,7 +791,5 @@ static NSArray *achievements_ = nil;
         }];
     }
 }
-
-#endif
 
 @end
