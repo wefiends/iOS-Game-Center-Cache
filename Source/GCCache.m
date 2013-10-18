@@ -629,6 +629,7 @@ static NSArray *achievements_ = nil;
     if (!self.isLocal) {
         GKAchievement *achievementObj = [[GKAchievement alloc] initWithIdentifier:[achievementDesc valueForKey:@"ID"]];
         achievementObj.percentComplete = progress;
+        achievementObj.showsCompletionBanner = YES;
         [achievementObj reportAchievementWithCompletionHandler:^(NSError *error)
          {
              if (!error) {
