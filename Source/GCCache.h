@@ -15,6 +15,7 @@
 
 + (NSArray*)cachedProfiles;
 + (GCCache*)cacheForProfile:(NSDictionary*)profileDict;
++ (BOOL)removeProfile: (NSDictionary*) profile;
 
 + (NSArray*)registeredAchievements;
 + (void)registerAchievements:(NSArray*)achievements;

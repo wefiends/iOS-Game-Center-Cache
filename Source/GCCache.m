@@ -67,6 +67,26 @@ static NSArray *achievements_ = nil;
     return [[[GCCache alloc] initWithDictionary:profileDict] autorelease];
 }
 
++ (BOOL)removeProfile: (NSDictionary*) profile {
+    NSMutableArray *allProfiles = [NSMutableArray arrayWithArray:
+                                   [[NSUserDefaults standardUserDefaults] arrayForKey:kGCProfilesProperty]];
+    // Looking for this profile
+    BOOL foundAndRemoved = NO;
+    for (int i = 0; i < allProfiles.count; ++i) {
+        NSDictionary *profileInCache = [allProfiles objectAtIndex:i];
+        if ([profile isEqualToDictionary:profileInCache]) {
+            [allProfiles removeObjectAtIndex:i];
+            foundAndRemoved = YES;
+            break;
+        }
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:allProfiles forKey:kGCProfilesProperty];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    return foundAndRemoved;
+}
+
 + (GCCache*)activeCache
 {
     @synchronized(self) {
