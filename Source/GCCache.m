@@ -173,7 +173,7 @@ static NSArray *achievements_ = nil;
 {
     GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
     [localPlayer authenticateWithCompletionHandler:^(NSError *e) {
-        if (localPlayer.isAuthenticated)
+        if (localPlayer.authenticated)
         {
             GCLOG(@"Player authenticated (%@).", [localPlayer alias]);
 
@@ -229,12 +229,13 @@ static NSArray *achievements_ = nil;
                               waitUntilDone:NO];
     } else {
         __block id blockTarget = target;
+        GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
         [GCCache authenticateLocalPlayerWithCompletionHandler:^(NSError *e) {
-            if (e) {
-                GCLOG(@"Player authentication had errors. Working locally.");
-            } else {
+            if (localPlayer.authenticated) {
                 GCLOG(@"Game Center launched.");
                 [GCCache activeCache].connected = YES;
+            } else {
+                GCLOG(@"Player authentication had errors. Working locally.");
             }
             
             [blockTarget performSelectorOnMainThread:action withObject:e waitUntilDone:NO];
